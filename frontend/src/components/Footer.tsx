@@ -55,6 +55,7 @@ const SOCIALS = [
   },
 ];
 
+
 const Footer = () => {
   return (
     <footer className="w-full border-t border-base-300/70 bg-base-200/40">
