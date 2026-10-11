@@ -18,7 +18,7 @@ const Navbar = () => {
     logout,
   } = useAuth();
 
-  console.log("user",user?.role);
+  
 
   const [isOpen, setIsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);

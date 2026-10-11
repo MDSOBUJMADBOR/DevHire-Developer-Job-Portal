@@ -81,12 +81,12 @@ const App = () => {
 
           <Route element={<ProtectedRoute />}>
 
-            <Route element={<MainLayout />}>
+            <Route
+              path="/dashboard/*"
+              element={<Dashboard />}
+            />
 
-              <Route
-                path="/dashboard/*"
-                element={<Dashboard />}
-              />
+            <Route element={<MainLayout />}>
 
               <Route
                 path="/profile"
