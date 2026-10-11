@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { api } from "../../../services/api";
 
 const CATEGORIES = [
   "Full Stack Developer",
@@ -29,6 +30,7 @@ const PostJob = () => {
   const [contactEmail, setContactEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [posting, setPosting] = useState(false);
 
   const resetForm = () => {
     setTitle("");
@@ -47,7 +49,7 @@ const PostJob = () => {
     setContactEmail("");
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -81,13 +83,29 @@ const PostJob = () => {
       requirements: requirements.trim(),
       deadline: deadline || null,
       contactEmail: contactEmail.trim(),
-      postedAt: new Date().toISOString(),
     };
 
     console.log("job post:", jobData);
 
-    setSuccess(`"${jobData.title}" posted! Check the console for the data.`);
-    resetForm();
+    setPosting(true);
+
+    try {
+      const result = await api("/jobs", {
+        method: "POST",
+        body: JSON.stringify(jobData),
+      });
+
+      console.log("job saved:", result);
+
+      setSuccess(`"${jobData.title}" posted to the database!`);
+      resetForm();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to post job"
+      );
+    } finally {
+      setPosting(false);
+    }
   };
 
   const inputClass =
@@ -275,9 +293,10 @@ const PostJob = () => {
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
             type="submit"
-            className="btn btn-primary rounded-xl px-8 font-bold"
+            disabled={posting}
+            className="btn btn-primary rounded-xl px-8 font-bold disabled:opacity-60"
           >
-            Post Job
+            {posting ? "Posting…" : "Post Job"}
           </button>
           <button
             type="button"
