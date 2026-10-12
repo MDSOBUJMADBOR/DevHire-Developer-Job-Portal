@@ -25,7 +25,6 @@ The platform focuses on job discovery, developer-friendly search, company explor
 - Candidate profile and profile completion
 - Job seeker resources
 - Employer job posting section
-- Clean navigation and reusable UI components
 - Responsive layouts for desktop, tablet, and mobile
 
 ## Job Categories
