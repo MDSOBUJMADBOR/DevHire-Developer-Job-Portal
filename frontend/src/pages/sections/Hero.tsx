@@ -20,7 +20,7 @@ const ROLES = [
   {
     company: 'Datawise',
     initial: 'D',
-    title: 'Full-Stack Developer',
+    title: 'Full-Stack Developer', 
     meta: 'Remote • $120–155k',
     match: '91%',
     tags: ['Python', 'React'],
@@ -29,14 +29,14 @@ const ROLES = [
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-base-100">
       {/* professional backdrop: grid + glows */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,oklch(0%_0_0/0.035)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0%_0_0/0.035)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_35%,black,transparent)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,oklch(0%_0_0/0.04)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0%_0_0/0.04)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_35%,black,transparent)]" />
         <div className="absolute -top-32 left-1/2 h-80 w-[42rem] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto grid w-full container items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
+      <div className="relative mx-auto grid w-full container items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24 ">
         {/* Left */}
         <div className="max-w-2xl">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-base-300 bg-base-100 py-1.5 pr-4 pl-1.5 shadow-sm">
@@ -49,7 +49,7 @@ const Hero = () => {
             </span>
           </div>
 
-          <h1 className="mt-6 text-4xl leading-[1.04] font-extrabold tracking-[-0.02em] text-balance sm:text-5xl lg:text-[4.2rem]">
+          <h1 className="mt-6 text-4xl leading-[1.04] font-extrabold tracking-[-0.02em] text-balance text-base-content sm:text-5xl lg:text-[4.2rem]">
             Get hired for the{' '}
             <span className="relative whitespace-nowrap">
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -65,7 +65,7 @@ const Hero = () => {
                   d="M3 9C60 3 160 3 217 8"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="4"
+                  strokeWidth={4}
                   strokeLinecap="round"
                 />
               </svg>
@@ -98,7 +98,7 @@ const Hero = () => {
             </a>
             <a
               href="/employers"
-              className="btn rounded-full border-base-300 bg-base-100 px-7 py-3.5 text-sm font-bold shadow-sm hover:border-primary/40 hover:text-primary"
+              className="btn btn-ghost rounded-full border-base-300 px-7 py-3.5 text-sm font-bold hover:border-primary/40 hover:text-primary"
             >
               Hire developers
             </a>
@@ -145,11 +145,11 @@ const Hero = () => {
               </div>
             </div>
             <span className="hidden h-10 w-px bg-base-300 sm:block" />
-            <div className="flex items-center gap-4 opacity-60">
+            <div className="flex items-center gap-4">
               {COMPANIES.slice(0, 3).map((c) => (
                 <span
                   key={c}
-                  className="text-sm font-extrabold tracking-tight text-base-content/70"
+                  className="text-sm font-extrabold tracking-tight text-base-content/50"
                 >
                   {c}
                 </span>
@@ -171,7 +171,7 @@ const Hero = () => {
               <p className="rounded-full bg-base-200 px-3 py-1 text-[11px] font-semibold text-base-content/60">
                 devhire.com/matches
               </p>
-              <span className="rounded-full bg-success/12 px-2.5 py-1 text-[11px] font-bold text-success">
+              <span className="rounded-full bg-success/10 px-2.5 py-1 text-[11px] font-bold text-success">
                 ● 3 new invites
               </span>
             </div>
@@ -187,7 +187,7 @@ const Hero = () => {
                       {job.initial}
                     </span>
                     <div className="min-w-0">
-                      <h3 className="truncate text-sm font-bold">
+                      <h3 className="truncate text-sm font-bold text-base-content">
                         {job.title}
                       </h3>
                       <p className="mt-0.5 truncate text-xs text-base-content/55">
@@ -227,7 +227,7 @@ const Hero = () => {
                   <div className="h-1.5 w-32 overflow-hidden rounded-full bg-base-300">
                     <div className="h-full w-[92%] rounded-full bg-gradient-to-r from-primary to-secondary" />
                   </div>
-                  <span className="text-[11px] font-bold">92%</span>
+                  <span className="text-[11px] font-bold text-base-content">92%</span>
                 </div>
               </div>
               <a
@@ -255,7 +255,7 @@ const Hero = () => {
               </svg>
             </span>
             <span>
-              <span className="block text-xs font-bold">
+              <span className="block text-xs font-bold text-base-content">
                 Offer received • $178k
               </span>
               <span className="block text-[11px] text-base-content/55">

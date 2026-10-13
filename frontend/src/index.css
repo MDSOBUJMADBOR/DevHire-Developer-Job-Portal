@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
+  themes: light --default, dark --selector;
 }
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 
 /* Mobile dropdown entrance */
 @keyframes mobile-menu-in {
