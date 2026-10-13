@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
+import { useLenis } from "./hooks/useLenis";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -23,6 +24,8 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 
 const App = () => {
+  useLenis();
+
   return (
     <BrowserRouter>
 
