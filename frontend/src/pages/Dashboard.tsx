@@ -13,7 +13,7 @@ import Education from "./dashboard/candidate/Education";
 import CandidateSettings from "./dashboard/candidate/Settings";
 
 import RecruiterOverview from "./dashboard/recruiter/Overview";
-import CompanyProfile from "./dashboard/recruiter/CompanyProfile";
+import YourProfile from "./dashboard/recruiter/YourProfile";
 import PostJob from "./dashboard/recruiter/PostJob";
 import ManageJobs from "./dashboard/recruiter/ManageJobs";
 import EditJob from "./dashboard/recruiter/EditJob";
@@ -42,7 +42,7 @@ const CANDIDATE_MENU = [
 
 const RECRUITER_MENU = [
   { key: "overview", label: "Overview" },
-  { key: "company", label: "Company Profile" },
+  { key: "profile", label: "Your Profile" },
   { key: "post-job", label: "Post Job" },
   { key: "manage-jobs", label: "Manage Jobs" },
   { key: "edit-job", label: "Edit Job" },
@@ -137,12 +137,21 @@ const Dashboard = () => {
 
     if (isRecruiter) {
       switch (active) {
+        case "profile":
         case "company":
-          return <CompanyProfile />;
+          return <YourProfile />;
         case "post-job":
-          return <PostJob />;
+          return (
+            <PostJob
+              onNavigateToManage={() => selectPage("manage-jobs")}
+            />
+          );
         case "manage-jobs":
-          return <ManageJobs />;
+          return (
+            <ManageJobs
+              onNavigateToPost={() => selectPage("post-job")}
+            />
+          );
         case "edit-job":
           return <EditJob />;
         case "applicants":
