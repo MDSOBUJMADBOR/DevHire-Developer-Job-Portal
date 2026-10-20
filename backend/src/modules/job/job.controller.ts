@@ -25,6 +25,17 @@ const getAllJobs = async (req: Request, res: Response) => {
   );
 };
 
+const getMyJobs = async (req: Request, res: Response) => {
+  const jobs = await jobService.getMyJobs(req.user!.userId);
+
+  return successResponse(
+    res,
+    200,
+    "My jobs retrieved successfully",
+    jobs
+  );
+};
+
 const getJobById = async (req: Request, res: Response) => {
   const { id } = req.params as { id: string };
   const job = await jobService.getJobById(id);
@@ -63,6 +74,7 @@ const deleteJob = async (req: Request, res: Response) => {
 export const jobController = {
   createJob,
   getAllJobs,
+  getMyJobs,
   getJobById,
   updateJob,
   deleteJob,
