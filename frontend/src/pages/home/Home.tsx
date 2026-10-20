@@ -14,16 +14,18 @@ const Home = () => {
     <div>
       <Hero />
       <Reveal direction="up" delay={100}>
-        <TopCompanies />
+        
+        <TrustedCompanies />
       </Reveal>
       <Reveal direction="up" delay={100}>
-        <TrustedCompanies />
+         <FeaturedJobs />
+        
       </Reveal>
       <Reveal direction="up" delay={100}>
         <WhyDevHire />
       </Reveal>
       <Reveal direction="up" delay={100}>
-        <FeaturedJobs />
+       <TopCompanies />
       </Reveal>
       <Reveal direction="up" delay={100}>
         <Testimonials />

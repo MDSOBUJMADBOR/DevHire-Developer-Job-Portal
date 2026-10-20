@@ -9,6 +9,13 @@ const router = Router();
 
 router.get("/", catchAsync(jobController.getAllJobs));
 
+router.get(
+  "/my-jobs",
+  authMiddleware,
+  roleMiddleware(Role.EMPLOYER, Role.ADMIN),
+  catchAsync(jobController.getMyJobs)
+);
+
 router.get("/:id", catchAsync(jobController.getJobById));
 
 router.post(

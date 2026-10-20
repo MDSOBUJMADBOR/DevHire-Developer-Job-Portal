@@ -1,8 +1,12 @@
+
 import { Job } from "./job.model";
-import { ICreateJob } from "./job.interface";
+import type { ICreateJob } from "./job.interface";
 import { Role } from "../../constants/role";
 
-const createJob = async (data: ICreateJob, userId: string) => {
+const createJob = async (
+  data: ICreateJob,
+  userId: string
+) => {
   return Job.create({
     title: data.title,
     category: data.category,
@@ -19,13 +23,25 @@ const createJob = async (data: ICreateJob, userId: string) => {
     contactEmail: data.contactEmail,
     postedBy: userId,
     status: "pending",
+    isActive: true,
   });
 };
 
+// Public listing: approved jobs only
 const getAllJobs = async () => {
-  return Job.find().sort({ createdAt: -1 });
+  return Job.find({
+    status: "approved",
+    isActive: true,
+  }).sort({ createdAt: -1 });
 };
 
+// Recruiter/Employer: list all jobs posted by current user
+const getMyJobs = async (userId: string) => {
+  return Job.find({ postedBy: userId }).sort({ createdAt: -1 });
+};
+
+// Admin or public detail access should be controlled
+// in the controller/service according to your policy.
 const getJobById = async (id: string) => {
   return Job.findById(id);
 };
@@ -42,13 +58,20 @@ const updateJob = async (
     return null;
   }
 
-  if (role !== Role.ADMIN && job.postedBy !== userId) {
+  const isAdmin = role === Role.ADMIN;
+  const isOwner = job.postedBy.toString() === userId;
+
+  if (!isAdmin && !isOwner) {
     throw new Error("Forbidden");
   }
 
-  // Only admins can change approval status
-  if (role !== Role.ADMIN) {
+  // Never allow clients to change ownership.
+  delete data.postedBy;
+
+  if (!isAdmin) {
+    // Only admins can change these fields.
     delete data.status;
+    delete data.isActive;
   }
 
   return Job.findByIdAndUpdate(id, data, {
@@ -68,7 +91,10 @@ const deleteJob = async (
     return null;
   }
 
-  if (role !== Role.ADMIN && job.postedBy !== userId) {
+  const isAdmin = role === Role.ADMIN;
+  const isOwner = job.postedBy.toString() === userId;
+
+  if (!isAdmin && !isOwner) {
     throw new Error("Forbidden");
   }
 
@@ -78,6 +104,7 @@ const deleteJob = async (
 export const jobService = {
   createJob,
   getAllJobs,
+  getMyJobs,
   getJobById,
   updateJob,
   deleteJob,
