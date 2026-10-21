@@ -16,6 +16,13 @@ router.get(
   catchAsync(jobController.getMyJobs)
 );
 
+router.get(
+  "/admin/all",
+  authMiddleware,
+  roleMiddleware(Role.ADMIN),
+  catchAsync(jobController.getAllJobsAdmin)
+);
+
 router.get("/:id", catchAsync(jobController.getJobById));
 
 router.post(
