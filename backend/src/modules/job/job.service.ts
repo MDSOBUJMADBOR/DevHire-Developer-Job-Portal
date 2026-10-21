@@ -40,6 +40,11 @@ const getMyJobs = async (userId: string) => {
   return Job.find({ postedBy: userId }).sort({ createdAt: -1 });
 };
 
+// Admin listing: all jobs regardless of status
+const getAllJobsAdmin = async () => {
+  return Job.find().sort({ createdAt: -1 });
+};
+
 // Admin or public detail access should be controlled
 // in the controller/service according to your policy.
 const getJobById = async (id: string) => {
@@ -58,7 +63,7 @@ const updateJob = async (
     return null;
   }
 
-  const isAdmin = role === Role.ADMIN;
+  const isAdmin = (role || "").toUpperCase() === Role.ADMIN;
   const isOwner = job.postedBy.toString() === userId;
 
   if (!isAdmin && !isOwner) {
@@ -91,7 +96,7 @@ const deleteJob = async (
     return null;
   }
 
-  const isAdmin = role === Role.ADMIN;
+  const isAdmin = (role || "").toUpperCase() === Role.ADMIN;
   const isOwner = job.postedBy.toString() === userId;
 
   if (!isAdmin && !isOwner) {
@@ -104,6 +109,7 @@ const deleteJob = async (
 export const jobService = {
   createJob,
   getAllJobs,
+  getAllJobsAdmin,
   getMyJobs,
   getJobById,
   updateJob,

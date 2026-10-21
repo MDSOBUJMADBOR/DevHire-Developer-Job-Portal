@@ -25,6 +25,17 @@ const getAllJobs = async (req: Request, res: Response) => {
   );
 };
 
+const getAllJobsAdmin = async (req: Request, res: Response) => {
+  const jobs = await jobService.getAllJobsAdmin();
+
+  return successResponse(
+    res,
+    200,
+    "All jobs retrieved successfully for admin",
+    jobs
+  );
+};
+
 const getMyJobs = async (req: Request, res: Response) => {
   const jobs = await jobService.getMyJobs(req.user!.userId);
 
@@ -74,6 +85,7 @@ const deleteJob = async (req: Request, res: Response) => {
 export const jobController = {
   createJob,
   getAllJobs,
+  getAllJobsAdmin,
   getMyJobs,
   getJobById,
   updateJob,

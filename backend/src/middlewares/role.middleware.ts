@@ -18,7 +18,10 @@ export const roleMiddleware =
       });
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const userRole = (req.user.role || "").toUpperCase();
+    const normalizedAllowed = allowedRoles.map((r) => r.toUpperCase());
+
+    if (!normalizedAllowed.includes(userRole)) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",

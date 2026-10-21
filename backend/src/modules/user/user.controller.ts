@@ -20,9 +20,8 @@ const getUserById = async (
   req: Request,
   res: Response
 ) => {
-  const user = await userService.getUserById(
-    req.params.id
-  );
+  const { id } = req.params as { id: string };
+  const user = await userService.getUserById(id);
 
   return successResponse(
     res,
@@ -36,8 +35,9 @@ const updateUser = async (
   req: Request,
   res: Response
 ) => {
+  const { id } = req.params as { id: string };
   const user = await userService.updateUser(
-    req.params.id,
+    id,
     req.body
   );
 
@@ -53,7 +53,8 @@ const deleteUser = async (
   req: Request,
   res: Response
 ) => {
-  await userService.deleteUser(req.params.id);
+  const { id } = req.params as { id: string };
+  await userService.deleteUser(id);
 
   return successResponse(
     res,
