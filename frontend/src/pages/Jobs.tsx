@@ -10,6 +10,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { api } from "../services/api";
+import ApplyJobModal from "../components/ApplyJobModal";
 
 export interface JobSalary {
   min: number | null;
@@ -95,6 +96,7 @@ const Jobs = () => {
   const [workplaceFilter, setWorkplaceFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [selectedJob, setSelectedJob] = useState<JobItem | null>(null);
+  const [applyingJob, setApplyingJob] = useState<JobItem | null>(null);
 
   const fetchJobs = async () => {
     try {
@@ -401,12 +403,13 @@ const Jobs = () => {
 
                 <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between pt-3.5 border-t border-base-200 gap-3">
                   <div className="flex items-center gap-2 w-full sm:w-auto">
-                    <Link
-                      to="/register"
+                    <button
+                      type="button"
+                      onClick={() => setApplyingJob(job)}
                       className="btn btn-primary btn-xs sm:btn-sm rounded-full px-4 sm:px-5 font-bold flex-1 sm:flex-initial text-center"
                     >
                       Apply now
-                    </Link>
+                    </button>
                     <button
                       onClick={() => setSelectedJob(job)}
                       className="btn btn-ghost btn-xs sm:btn-sm rounded-full border border-base-300 px-3 sm:px-4 font-bold flex-1 sm:flex-initial text-center"
@@ -573,16 +576,28 @@ const Jobs = () => {
               >
                 Close
               </button>
-              <Link
-                to="/register"
+              <button
+                type="button"
+                onClick={() => {
+                  const target = selectedJob;
+                  setSelectedJob(null);
+                  setApplyingJob(target);
+                }}
                 className="btn btn-primary btn-sm rounded-full px-6 font-bold w-full sm:w-auto text-center"
               >
                 Apply now
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* APPLY JOB MODAL */}
+      <ApplyJobModal
+        job={applyingJob}
+        isOpen={!!applyingJob}
+        onClose={() => setApplyingJob(null)}
+      />
     </div>
   );
 };

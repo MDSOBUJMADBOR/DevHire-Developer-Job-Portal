@@ -15,7 +15,7 @@ const FOOTER_COLS = [
     title: 'Employers',
     links: [
       { label: 'Post a Job', href: '/register' },
-      { label: 'Pricing', href: '/employers' },
+      { label: 'Hire Developers', href: '/employers' },
       { label: 'Talent Search', href: '/employers' },
       { label: 'Employer Branding', href: '/employers' },
     ],
@@ -23,8 +23,8 @@ const FOOTER_COLS = [
   {
     title: 'Company',
     links: [
-      { label: 'About Us', href: '/' },
-      { label: 'Contact', href: '/' },
+      { label: 'About Us', href: '/about' },
+      { label: 'Contact', href: '/contact' },
       { label: 'Blog', href: '/resources' },
       { label: 'Careers', href: '/companies' },
       { label: 'Press Kit', href: '/' },

@@ -8,6 +8,8 @@ const NAV_LINKS = [
   { label: 'Companies', href: '/companies' },
   { label: 'Salaries', href: '/salaries' },
   { label: 'Resources', href: '/resources' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const Navbar = () => {
