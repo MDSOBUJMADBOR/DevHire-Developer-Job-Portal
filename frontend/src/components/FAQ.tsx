@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import Reveal from "./Reveal";
 
@@ -57,12 +58,12 @@ export default function FAQ() {
               started with DevHire.
             </p>
 
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="mt-6 inline-flex items-center text-sm font-bold text-base-content/70 transition-colors duration-300 hover:text-primary"
             >
               Contact our team →
-            </a>
+            </Link>
           </div>
 
           {/* FAQ Accordion */}
