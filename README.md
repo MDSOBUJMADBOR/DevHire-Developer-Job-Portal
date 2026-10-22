@@ -13,9 +13,9 @@
 [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-**DevHire** is a full-stack, developer-first recruitment and job discovery platform. Designed specifically for software engineers, engineering leaders, and modern tech companies, DevHire bridges the gap between top engineering talent and high-growth teams with salary transparency, rich developer profiles, interactive salary estimators, and dedicated role-based portals.
+**DevHire** is a full-stack, developer-first recruitment and job discovery platform. Designed specifically for software engineers, engineering leaders, and modern tech companies, DevHire bridges the gap between top engineering talent and high-growth teams with salary transparency, rich developer profiles, interactive salary estimators, in-app application submission to MongoDB, live recruitment graphs, and dedicated role-based portals.
 
-[Explore Jobs](#-public-portal--features) • [Candidate Suite](#-candidate-portal) • [Recruiter Suite](#-recruiter--employer-portal) • [Admin Control Center](#-admin-control-center) • [Setup Guide](#-getting-started)
+[Explore Jobs](#-public-portal--features) • [Candidate Suite](#-candidate-portal) • [Recruiter Suite](#-recruiter--employer-portal) • [Admin Control Center](#-admin-control-center) • [Setup Guide](#-getting-started) • [API Reference](#-api-endpoints-overview)
 
 </div>
 
@@ -25,9 +25,10 @@
 
 - **Full-Stack MERN Architecture:** Built with React 19, TypeScript, Node.js/Express, and MongoDB with strict typing.
 - **Role-Based Access Control (RBAC):** Three distinct portals for **Candidates**, **Recruiters (Employers)**, and **Admins**.
+- **Interactive Application Engine:** Candidates apply directly from job cards or modal popups; data persists in MongoDB and synchronizes in real time with the candidate's **My Applications** dashboard.
+- **Recruiter Analytics Dashboard:** Live visual graphs including a **Weekly/Monthly Application Inflow Bar Chart**, **Hiring Funnel & ATS Conversion Pipeline**, and **Tech Stack Distribution Breakdown**.
 - **Modern Responsive Design System:** Tailwind CSS v4 paired with DaisyUI v5 for ultra-fast performance, dark/light compatibility, and 100% mobile responsiveness.
-- **Real-Time Data Integration:** Connected to RESTful backend endpoints (`/api/jobs`, `/api/users`, `/api/auth`) with JWT authentication.
-- **Interactive Tools:** In-page PDF resume document previewer, live developer salary calculator, and technical playbook reader modal.
+- **Radical Salary Transparency:** Every job features explicit compensation bands with an interactive salary estimator widget.
 
 ---
 
@@ -36,10 +37,13 @@
 | Page | Description |
 | :--- | :--- |
 | **Landing Page (`Home.tsx`)** | Dynamic hero section, search bar, live featured jobs from REST API, trusted companies carousel, value propositions, and candidate testimonials. |
-| **Job Search & Filters (`Jobs.tsx`)** | Real-time search by keywords, category pill filters (`Frontend`, `Backend`, `Full Stack`, `DevOps`, etc.), workplace model dropdown (`Remote`, `Hybrid`, `On-site`), job type, and job details drawer. |
-| **Top Companies (`Companies.tsx`)** | Directory of 18+ vetted tech teams (Stripe, OpenAI, Vercel, Supabase, Datadog) with tech stack tags, work models, compensation benchmarks, and open role counters. |
+| **Job Search & Filters (`Jobs.tsx`)** | Real-time search by keywords, category pill filters (`Frontend`, `Backend`, `Full Stack`, `DevOps`, etc.), workplace model dropdown (`Remote`, `Hybrid`, `On-site`), and instant **"Apply Now" Modal** trigger. |
+| **Top Companies (`Companies.tsx`)** | Directory of vetted tech teams (Stripe, OpenAI, Vercel, Supabase, Datadog) with tech stack tags, work models, compensation benchmarks, and open role counters. |
 | **Salary Guide (`Salaries.tsx`)** | Interactive **Developer Salary Estimator Widget**, compensation benchmarks, demand indices, and instant toggle between **Grid Cards** and **Detailed Table View**. |
 | **Engineering Playbooks (`Resources.tsx`)** | Technical interview cheatsheets, ATS resume templates, and system design roadmaps with an interactive reader modal. |
+| **For Employers (`Employers.tsx`)** | Dedicated recruitment landing page detailing 12-day time-to-hire ROI, pre-screened developer profiles, direct comparison with traditional job portals, and hiring CTAs. |
+| **About Us (`About.tsx`)** | The Developer-First Manifesto, mission, 18,500+ engineer community metrics, core values, dual-sided ecosystem breakdown, and tech stack highlights. |
+| **Contact Support (`Contact.tsx`)** | Multi-channel support desk (candidate, employer, security triage), interactive message dispatch form with category selection, and headquarters info. |
 
 ---
 
@@ -48,9 +52,10 @@
 A comprehensive career hub for developers to track applications, manage resumes, and optimize recruiter visibility:
 
 - **Dashboard Overview (`Overview.tsx`):** Real-time application metrics (Total, In Review, Interviewing, Offered), saved job counter, profile strength indicator, and recent activity log.
+- **My Applications (`MyApplications.tsx`):** Real-time application tracking connected directly to MongoDB (`/api/applications/my-applications`). Displays status badges (`Submitted`, `Under Review`, `Interviewing`, `Offered`, `Not Selected`), stage progress timeline, notes, candidate info inspector, and 1-click application withdrawal.
+- **Interactive Application Modal (`ApplyJobModal.tsx`):** 1-click modal that autofills candidate info, accepts resume link, portfolio, GitHub, years of experience, and cover note, saving directly to MongoDB.
 - **My Profile (`MyProfile.tsx`):** Developer bio, professional headline, years of experience, remote/hybrid preferences, GitHub, LinkedIn, and portfolio link manager connected to backend REST APIs.
-- **My Applications (`MyApplications.tsx`):** Application tracking table/cards with status badges (`Under Review`, `Interviewing`, `Offered`, `Not Selected`), stage timeline modal, notes, and application withdrawal.
-- **Saved Jobs (`SavedJobs.tsx`):** Bookmarked developer roles with a 1-click **Quick Apply** modal that automatically synchronizes with active applications.
+- **Saved Jobs (`SavedJobs.tsx`):** Bookmarked developer roles with a 1-click Quick Apply action that automatically synchronizes with active applications.
 - **My Resume (`MyResume.tsx`):** Drag-and-drop resume upload zone (PDF/DOCX), automated ATS compatibility analyzer (90%+), and an **in-page embedded PDF document viewer** with instant download and replace.
 - **Skills Manager (`Skills.tsx`):** Technical and soft skills manager with proficiency tiers (`Beginner`, `Intermediate`, `Advanced`, `Expert`), star ratings, category groupings, and quick-add suggestions.
 - **Work Experience (`Experience.tsx`):** Career timeline with company names, roles, employment types, technologies used, achievements, and add/edit/delete modals.
@@ -63,11 +68,14 @@ A comprehensive career hub for developers to track applications, manage resumes,
 
 Equips hiring teams and technical recruiters with tools to source and evaluate software talent:
 
-- **Recruiter Overview:** Live candidate applicants count, active job posts metrics, and hiring pipeline status.
-- **Company Profile:** Manage corporate bio, hiring locations, tech stacks, benefits, and logo.
-- **Post a Job:** Multi-step job authoring form with salary bands, tech tags, experience level, and workplace setup.
-- **Manage Jobs:** Centralized job dashboard with options to edit listings, change status (`Open`, `Paused`, `Closed`), and view incoming applications.
-- **Applicant Tracking System (ATS):** Review applicant resumes, stage interviews, change candidate statuses, and take internal hiring notes.
+- **Analytics Overview (`Overview.tsx`):** 
+  - **Application Inflow Graph:** Multi-bar chart with gradient pillars and Weekly/Monthly toggle to track applicant volume.
+  - **ATS Pipeline Funnel Graph:** 5-stage conversion visualization from *Applied (100%)* to *Offer Extended (7%)*.
+  - **Tech Stack Distribution Graph:** Multi-segment breakdown of candidate competencies (Full Stack, Backend, Frontend, DevOps, Mobile).
+  - **Recruiter Capability Hub:** 4 one-click workflow triggers (*Post Job*, *Manage Listings*, *Review Candidates*, *Update Brand*).
+- **Post a Job (`PostJob.tsx`):** Multi-step job authoring form with salary bands, tech tags, experience level, workplace model, and live candidate preview modal connected to `POST /api/jobs`.
+- **Manage Jobs (`ManageJobs.tsx`):** Centralized job dashboard with real-time search, filters, inline edit modal (`PATCH /api/jobs/:id`), status toggling, and deletion (`DELETE /api/jobs/:id`).
+- **Company Profile (`YourProfile.tsx`):** Manage corporate bio, hiring locations, tech stacks, benefits, team size, website, and recruiter details.
 
 ---
 
@@ -76,8 +84,8 @@ Equips hiring teams and technical recruiters with tools to source and evaluate s
 Comprehensive platform moderation and user governance:
 
 - **Analytics Overview:** High-level metrics showing total registered candidates, verified recruiters, active jobs, and platform health.
-- **User Management:** Directory of all registered users with **instant inline role switching** (`Admin`, `Recruiter`, `Candidate`) and active status toggling.
-- **Recruiter Management:** Directory of employer accounts with verification badges, registered emails, and live job counts.
+- **User Management (`UserManagement.tsx`):** Directory of all registered users with **instant inline role switching** (`ADMIN`, `EMPLOYER`, `CANDIDATE`) and active status toggling.
+- **Recruiter Management (`RecruiterManagement.tsx`):** Directory of employer accounts with verification badges, registered emails, and live job counts.
 - **Job Moderation (`JobManagement.tsx`):** Full moderation table where administrators review pending job posts, approve or reject listings, inspect details, or remove obsolete posts.
 - **Platform Configuration (`Settings.tsx`):** Platform-wide maintenance toggles, security rules, and admin credentials.
 
@@ -96,9 +104,9 @@ Comprehensive platform moderation and user governance:
 
 ### Backend
 - **Runtime:** Node.js (LTS)
-- **Framework:** Express.js (TypeScript)
+- **Framework:** Express.js 5 (TypeScript)
 - **Database:** MongoDB via Mongoose ODM
-- **Authentication:** JSON Web Tokens (JWT) + bcrypt password hashing
+- **Authentication:** JSON Web Tokens (JWT) + bcryptjs password hashing
 - **Development Tooling:** `ts-node-dev` with hot-reloading
 
 ---
@@ -109,36 +117,44 @@ Comprehensive platform moderation and user governance:
 Job-Portal/
 ├── backend/
 │   ├── src/
-│   │   ├── config/             # DB & environment configs
-│   │   ├── constants/          # Enums (Role, Job status, etc.)
-│   │   ├── middlewares/        # Auth verify & role guards
+│   │   ├── config/             # DB connection (connectDB) & env variables
+│   │   ├── constants/          # Enums (Role: ADMIN, EMPLOYER, CANDIDATE)
+│   │   ├── middlewares/        # authMiddleware, roleMiddleware, error/notFound
 │   │   ├── modules/
+│   │   │   ├── application/    # Application model, service, controller, routes
 │   │   │   ├── auth/           # Login, register, JWT controllers & routes
-│   │   │   ├── job/            # Job CRUD, public list & admin endpoints
+│   │   │   ├── job/            # Job CRUD, public list & admin moderation
 │   │   │   └── user/           # User profile & role switching service
-│   │   └── server.ts           # Express app bootstrap
+│   │   ├── routes/             # Centralized Express router mounting (/api)
+│   │   ├── types/              # Common & Express typing definitions
+│   │   ├── utils/              # catchAsync, response helpers, JWT sign/verify
+│   │   ├── app.ts              # Express middleware and app config
+│   │   └── server.ts           # Server bootstrap and port listener
 │   ├── .env                    # Backend environment secrets
 │   ├── package.json
 │   └── tsconfig.json
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── components/         # Navbar, Footer, ProtectedRoute, Modals
+│   │   ├── components/         # ApplyJobModal, Navbar, Footer, ProtectedRoute, FAQ
 │   │   ├── context/            # AuthContext & role session management
-│   │   ├── layouts/            # MainLayout, DashboardLayout
+│   │   ├── layouts/            # MainLayout
 │   │   ├── pages/
-│   │   │   ├── home/           # Landing page sections
+│   │   │   ├── home/           # Landing page sections & CTA
 │   │   │   ├── dashboard/
 │   │   │   │   ├── admin/      # Admin moderation & user management
-│   │   │   │   ├── candidate/  # Candidate applications, resume & profile
-│   │   │   │   └── recruiter/  # Job posting & applicant reviews
-│   │   │   ├── Jobs.tsx        # Public searchable job list
+│   │   │   │   ├── candidate/  # MyApplications, MyResume, MyProfile, Skills, SavedJobs
+│   │   │   │   └── recruiter/  # Overview (Graphs), PostJob, ManageJobs, YourProfile
+│   │   │   ├── Jobs.tsx        # Public searchable job list & Apply triggers
 │   │   │   ├── Companies.tsx   # Tech company directory
 │   │   │   ├── Salaries.tsx    # Interactive salary estimator
 │   │   │   ├── Resources.tsx   # Engineering playbooks & guides
+│   │   │   ├── Employers.tsx   # For Employers recruitment suite & comparison
+│   │   │   ├── About.tsx       # Developer-first manifesto & platform story
+│   │   │   ├── Contact.tsx     # Multi-channel support desk & message form
 │   │   │   ├── Login.tsx       # Auth login page
-│   │   │   └── Register.tsx    # Registration with role selection
-│   │   ├── services/           # Axios/Fetch API client with auth token
+│   │   │   └── Register.tsx    # Registration with role selection (Candidate/Employer)
+│   │   ├── services/           # Typed api() fetch client with JWT Bearer header
 │   │   ├── App.tsx             # Route declarations
 │   │   └── main.tsx            # DOM root mounting
 │   ├── package.json
@@ -236,17 +252,33 @@ npm run build
 
 ## 📡 API Endpoints Overview
 
+### Authentication & Users
 | Method | Endpoint | Access | Purpose |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/auth/register` | Public | Register new Candidate or Employer |
 | `POST` | `/api/auth/login` | Public | Authenticate user and receive JWT token |
-| `GET` | `/api/jobs` | Public | Fetch approved job listings (supports query & category) |
-| `GET` | `/api/jobs/admin/all` | Admin | Fetch all jobs (including Pending, Approved, Rejected) |
-| `POST` | `/api/jobs` | Employer / Admin | Post a new developer job |
-| `PATCH` | `/api/jobs/:id/status`| Admin | Moderate job status (`APPROVED`, `REJECTED`, etc.) |
-| `DELETE`| `/api/jobs/:id` | Admin / Employer | Delete a job listing |
 | `GET` | `/api/users` | Admin | Fetch registered users directory |
 | `PATCH` | `/api/users/:id` | Authenticated | Update user profile, contact info, or admin role change |
+
+### Jobs Management
+| Method | Endpoint | Access | Purpose |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/jobs` | Public | Fetch approved job listings (supports query & category) |
+| `GET` | `/api/jobs/my-jobs` | Employer / Admin | Fetch jobs posted by the logged-in user |
+| `GET` | `/api/jobs/admin/all` | Admin | Fetch all jobs (including Pending, Approved, Rejected) |
+| `GET` | `/api/jobs/:id` | Public | Fetch single job listing details |
+| `POST` | `/api/jobs` | Employer / Admin | Post a new developer job |
+| `PATCH` | `/api/jobs/:id` | Employer / Admin | Update job details (Ownership protected) |
+| `DELETE`| `/api/jobs/:id` | Employer / Admin | Delete a job listing (Ownership protected) |
+
+### Applications & ATS
+| Method | Endpoint | Access | Purpose |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/applications` | Authenticated | Submit candidate application to MongoDB |
+| `GET` | `/api/applications/my-applications` | Authenticated | Fetch candidate's own submitted applications |
+| `GET` | `/api/applications/all` | Employer / Admin | Fetch all incoming applications across postings |
+| `GET` | `/api/applications/:id` | Authenticated | Retrieve single application details |
+| `DELETE`| `/api/applications/:id` | Authenticated | Withdraw / remove job application |
 
 ---
 
