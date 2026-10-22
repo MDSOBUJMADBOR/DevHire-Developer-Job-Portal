@@ -16,7 +16,9 @@ import Jobs from "./pages/Jobs";
 import Companies from "./pages/Companies";
 import Salaries from "./pages/Salaries";
 import Resources from "./pages/Resources";
-import Placeholder from "./pages/Placeholder";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Employers from "./pages/Employers";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -64,7 +66,17 @@ const App = () => {
 
             <Route
               path="/employers"
-              element={<Placeholder />}
+              element={<Employers />}
+            />
+
+            <Route
+              path="/about"
+              element={<About />}
+            />
+
+            <Route
+              path="/contact"
+              element={<Contact />}
             />
 
             <Route
