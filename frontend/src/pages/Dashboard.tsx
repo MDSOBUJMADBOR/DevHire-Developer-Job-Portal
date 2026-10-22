@@ -159,7 +159,7 @@ const Dashboard = () => {
         case "applicant-details":
           return <ApplicantDetails />;
         default:
-          return <RecruiterOverview />;
+          return <RecruiterOverview onNavigate={selectPage} />;
       }
     }
 
