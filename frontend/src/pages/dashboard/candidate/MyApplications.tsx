@@ -13,7 +13,13 @@ import {
   Eye,
   Trash2,
   FileText,
+  RefreshCw,
+  ExternalLink,
+  Phone,
+  Mail,
+  User as UserIcon,
 } from "lucide-react";
+import { api } from "../../../services/api";
 
 export interface ApplicationItem {
   id: string;
@@ -26,6 +32,13 @@ export interface ApplicationItem {
   appliedDate: string;
   status: "applied" | "reviewing" | "interview" | "offered" | "rejected";
   notes?: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  resumeUrl?: string;
+  portfolioUrl?: string;
+  githubUrl?: string;
+  experience?: string;
   stageTimeline?: { stage: string; date: string; completed: boolean }[];
 }
 
@@ -125,10 +138,72 @@ const MyApplications = () => {
     return DEFAULT_APPLICATIONS;
   });
 
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedApplication, setSelectedApplication] = useState<ApplicationItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const fetchApplications = async () => {
+    try {
+      setLoading(true);
+      const res = await api<{ success: boolean; data: any[] }>(
+        "/applications/my-applications"
+      );
+      if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+        const mapped: ApplicationItem[] = res.data.map((item) => ({
+          id: item._id || item.id,
+          jobId: item.jobId,
+          jobTitle: item.jobTitle,
+          company: item.company,
+          location: item.location,
+          salary: item.salary || "Negotiable",
+          type: item.type || "Full-time",
+          appliedDate:
+            item.appliedDate ||
+            (item.createdAt
+              ? new Date(item.createdAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })
+              : "Recently"),
+          status: item.status || "applied",
+          notes: item.coverNote || item.notes || "",
+          fullName: item.fullName,
+          email: item.email,
+          phone: item.phone,
+          resumeUrl: item.resumeUrl,
+          portfolioUrl: item.portfolioUrl,
+          githubUrl: item.githubUrl,
+          experience: item.experience,
+          stageTimeline: item.stageTimeline || [
+            {
+              stage: "Application Submitted",
+              date: item.appliedDate || "Recently",
+              completed: true,
+            },
+            { stage: "Profile Review", date: "Pending", completed: false },
+            { stage: "Technical Interview", date: "Pending", completed: false },
+            { stage: "Final Offer", date: "Pending", completed: false },
+          ],
+        }));
+        setApplications(mapped);
+        localStorage.setItem(
+          "devhire_candidate_applications",
+          JSON.stringify(mapped)
+        );
+      }
+    } catch (err) {
+      console.warn("Could not fetch applications from MongoDB, using cached list:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchApplications();
+  }, []);
 
   // Sync with localStorage
   useEffect(() => {
@@ -143,8 +218,19 @@ const MyApplications = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const handleWithdraw = (id: string, title: string) => {
-    if (window.confirm(`Are you sure you want to withdraw your application for "${title}"?`)) {
+  const handleWithdraw = async (id: string, title: string) => {
+    if (
+      window.confirm(
+        `Are you sure you want to withdraw your application for "${title}"?`
+      )
+    ) {
+      try {
+        if (id && !id.startsWith("app-")) {
+          await api(`/applications/${id}`, { method: "DELETE" });
+        }
+      } catch (err) {
+        console.warn("Could not delete from backend:", err);
+      }
       setApplications((prev) => prev.filter((a) => a.id !== id));
       if (selectedApplication?.id === id) {
         setSelectedApplication(null);
@@ -231,13 +317,25 @@ const MyApplications = () => {
             Track and manage your submitted developer job applications in real time.
           </p>
         </div>
-        <Link
-          to="/jobs"
-          className="btn btn-primary btn-sm rounded-xl font-bold gap-2 self-start sm:self-auto"
-        >
-          <Briefcase className="w-4 h-4" />
-          Explore More Jobs
-        </Link>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <button
+            type="button"
+            onClick={fetchApplications}
+            disabled={loading}
+            className="btn btn-ghost btn-sm border border-base-300 rounded-xl font-bold gap-1.5"
+            title="Refresh from MongoDB"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            Refresh
+          </button>
+          <Link
+            to="/jobs"
+            className="btn btn-primary btn-sm rounded-xl font-bold gap-2"
+          >
+            <Briefcase className="w-4 h-4" />
+            Explore More Jobs
+          </Link>
+        </div>
       </div>
 
       {/* Metric Counters */}
@@ -502,6 +600,81 @@ const MyApplications = () => {
                 ))}
               </div>
             </div>
+
+            {/* Candidate Submitted Details (if available) */}
+            {(selectedApplication.fullName ||
+              selectedApplication.email ||
+              selectedApplication.resumeUrl ||
+              selectedApplication.portfolioUrl) && (
+              <div className="p-4 rounded-2xl bg-base-200/50 border border-base-300 space-y-2.5">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-base-content/70">
+                  Your Submitted Information
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  {selectedApplication.fullName && (
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-3.5 h-3.5 text-base-content/50" />
+                      <span className="font-semibold">{selectedApplication.fullName}</span>
+                    </div>
+                  )}
+                  {selectedApplication.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-3.5 h-3.5 text-base-content/50" />
+                      <span className="font-semibold">{selectedApplication.email}</span>
+                    </div>
+                  )}
+                  {selectedApplication.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-3.5 h-3.5 text-base-content/50" />
+                      <span className="font-semibold">{selectedApplication.phone}</span>
+                    </div>
+                  )}
+                  {selectedApplication.experience && (
+                    <div className="flex items-center gap-2">
+                      <Briefcase className="w-3.5 h-3.5 text-base-content/50" />
+                      <span className="font-semibold">{selectedApplication.experience}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-1 border-t border-base-300/60">
+                  {selectedApplication.resumeUrl && (
+                    <a
+                      href={selectedApplication.resumeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-xs btn-outline rounded-lg gap-1 text-[11px] font-bold"
+                    >
+                      <FileText className="w-3 h-3 text-primary" />
+                      Resume Link
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  )}
+                  {selectedApplication.portfolioUrl && (
+                    <a
+                      href={selectedApplication.portfolioUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-xs btn-ghost border border-base-300 rounded-lg gap-1 text-[11px] font-bold"
+                    >
+                      Portfolio
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  )}
+                  {selectedApplication.githubUrl && (
+                    <a
+                      href={selectedApplication.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-xs btn-ghost border border-base-300 rounded-lg gap-1 text-[11px] font-bold"
+                    >
+                      GitHub
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Notes Section */}
             {selectedApplication.notes && (
