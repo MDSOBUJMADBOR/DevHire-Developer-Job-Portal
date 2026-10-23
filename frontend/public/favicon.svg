@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Job Portal logo">
-  <image width="160" height="160" href="data:image/png;base64,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" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="devhire-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+
+  <!-- DevHire Brand Background -->
+  <rect width="64" height="64" rx="16" fill="url(#devhire-grad)" />
+
+  <!-- Code Symbol < / > -->
+  <g fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left Bracket < -->
+    <path d="M22 23 L13 32 L22 41" />
+    <!-- Center Slash / -->
+    <path d="M36 15 L28 49" />
+    <!-- Right Bracket > -->
+    <path d="M42 23 L51 32 L42 41" />
+  </g>
 </svg>
