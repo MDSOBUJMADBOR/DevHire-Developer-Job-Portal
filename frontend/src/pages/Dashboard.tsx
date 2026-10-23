@@ -178,7 +178,7 @@ const Dashboard = () => {
         case "settings":
           return <AdminSettings />;
         default:
-          return <AdminOverview />;
+          return <AdminOverview onNavigate={setActive} />;
       }
     }
 

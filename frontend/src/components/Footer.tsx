@@ -151,9 +151,9 @@ const Footer = () => {
           </div>
           <div className="flex items-center gap-5 text-xs font-medium">
             {[
-              { label: 'Privacy', href: '/' },
+              { label: 'Privacy', href: '/privacy' },
               { label: 'Terms', href: '/' },
-              { label: 'Cookies', href: '/' },
+              { label: 'Cookies', href: '/cookies' },
             ].map((l) => (
               <Link
                 key={l.label}

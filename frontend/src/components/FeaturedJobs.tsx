@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import Reveal from "./Reveal";
 import { api } from "../services/api";
+import ApplyJobModal from "./ApplyJobModal";
+import type { JobItem as BaseJobItem } from "../pages/Jobs";
 
 export interface JobSalary {
   min: number | null;
@@ -46,6 +48,7 @@ interface ApiResponse<T> {
 const FALLBACK_JOBS: JobItem[] = [
   {
     id: 1,
+    title: "Senior Frontend Engineer",
     role: "Senior Frontend Engineer",
     company: "Nexora",
     initial: "N",
@@ -58,6 +61,7 @@ const FALLBACK_JOBS: JobItem[] = [
   },
   {
     id: 2,
+    title: "Backend Developer",
     role: "Backend Developer",
     company: "Cloudly",
     initial: "C",
@@ -70,6 +74,7 @@ const FALLBACK_JOBS: JobItem[] = [
   },
   {
     id: 3,
+    title: "MERN Stack Developer",
     role: "MERN Stack Developer",
     company: "StackLab",
     initial: "S",
@@ -82,6 +87,7 @@ const FALLBACK_JOBS: JobItem[] = [
   },
   {
     id: 4,
+    title: "Junior Software Developer",
     role: "Junior Software Developer",
     company: "Datawise",
     initial: "D",
@@ -94,6 +100,7 @@ const FALLBACK_JOBS: JobItem[] = [
   },
   {
     id: 5,
+    title: "Full Stack Developer",
     role: "Full Stack Developer",
     company: "FintechCo",
     initial: "F",
@@ -106,6 +113,7 @@ const FALLBACK_JOBS: JobItem[] = [
   },
   {
     id: 6,
+    title: "Frontend Developer",
     role: "Frontend Developer",
     company: "PixelWorks",
     initial: "P",
@@ -152,6 +160,7 @@ export default function FeaturedJobs() {
   const [featuredJobs, setFeaturedJobs] = useState<JobItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<JobItem | null>(null);
+  const [applyingJob, setApplyingJob] = useState<BaseJobItem | null>(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -171,6 +180,7 @@ export default function FeaturedJobs() {
             return {
               ...job,
               id: job._id || job.id || index + 1,
+              title: roleTitle,
               role: roleTitle,
               company: companyName,
               initial,
@@ -257,9 +267,8 @@ export default function FeaturedJobs() {
                       {/* Top Bar: Initial + Title + Open Details */}
                       <div className="flex items-start gap-4">
                         <div
-                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-extrabold ${
-                            job.color || "bg-primary/10 text-primary"
-                          } dark:bg-primary/20 dark:text-primary`}
+                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-extrabold ${job.color || "bg-primary/10 text-primary"
+                            } dark:bg-primary/20 dark:text-primary`}
                         >
                           {job.initial || (job.company ? job.company[0].toUpperCase() : "J")}
                         </div>
@@ -342,9 +351,8 @@ export default function FeaturedJobs() {
             <div className="p-6 border-b border-base-200 flex items-start justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black ${
-                    selectedJob.color || "bg-primary/10 text-primary"
-                  }`}
+                  className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black ${selectedJob.color || "bg-primary/10 text-primary"
+                    }`}
                 >
                   {selectedJob.initial || (selectedJob.company ? selectedJob.company[0].toUpperCase() : "J")}
                 </div>
@@ -463,17 +471,34 @@ export default function FeaturedJobs() {
               </Link>
 
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <Link
-                  to="/register"
+                <button
+                  type="button"
+                  onClick={() => {
+                    const target = selectedJob;
+                    if (target) {
+                      setSelectedJob(null);
+                      setApplyingJob({
+                        ...target,
+                        title: target.title || target.role || "Developer",
+                      });
+                    }
+                  }}
                   className="btn btn-primary btn-sm rounded-xl px-5 font-bold w-full sm:w-auto text-center"
                 >
                   Apply now
-                </Link>
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* APPLY JOB MODAL */}
+      <ApplyJobModal
+        job={applyingJob}
+        isOpen={!!applyingJob}
+        onClose={() => setApplyingJob(null)}
+      />
     </section>
   );
 }

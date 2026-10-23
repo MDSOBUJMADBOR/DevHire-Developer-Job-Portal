@@ -10,6 +10,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import ApplyJobModal from "../components/ApplyJobModal";
 
 export interface JobSalary {
@@ -86,6 +87,7 @@ const CATEGORIES = [
 ];
 
 const Jobs = () => {
+  const { isAuthenticated } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q") ?? "";
   const initialCategory = searchParams.get("category") ?? "all";
@@ -200,12 +202,14 @@ const Jobs = () => {
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             Refresh
           </button>
-          <Link
-            to="/register"
-            className="btn btn-primary btn-xs sm:btn-sm rounded-full px-4 sm:px-5 font-bold"
-          >
-            Post a job
-          </Link>
+          {!isAuthenticated && (
+            <Link
+              to="/register"
+              className="btn btn-primary btn-xs sm:btn-sm rounded-full px-4 sm:px-5 font-bold"
+            >
+              Post a job
+            </Link>
+          )}
         </div>
       </div>
 
