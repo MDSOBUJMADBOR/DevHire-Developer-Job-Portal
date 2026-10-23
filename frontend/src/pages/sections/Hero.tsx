@@ -20,7 +20,7 @@ const ROLES = [
   {
     company: 'Datawise',
     initial: 'D',
-    title: 'Full-Stack Developer', 
+    title: 'Full-Stack Developer',
     meta: 'Remote • $120–155k',
     match: '91%',
     tags: ['Python', 'React'],
@@ -111,11 +111,10 @@ const Hero = () => {
                 {['AK', 'JM', 'RS', 'TL'].map((n, i) => (
                   <span
                     key={n}
-                    className={`flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-base-100 ${
-                      i % 2 === 0
+                    className={`flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-base-100 ${i % 2 === 0
                         ? 'bg-primary text-primary-content'
                         : 'bg-neutral text-neutral-content'
-                    }`}
+                      }`}
                   >
                     {n}
                   </span>
@@ -209,9 +208,9 @@ const Hero = () => {
                     <span className="text-xs font-extrabold text-success">
                       {job.match} match
                     </span>
-                    <span className="btn btn-primary btn-xs rounded-full px-4 font-bold">
+                    <a href="/jobs" className="btn btn-primary btn-xs rounded-full px-4 font-bold">
                       Apply
-                    </span>
+                    </a>
                   </div>
                 </article>
               ))}
