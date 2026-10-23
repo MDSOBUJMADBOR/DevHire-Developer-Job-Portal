@@ -18,6 +18,8 @@ import Salaries from "./pages/Salaries";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Cookies from "./pages/Cookies";
 import Employers from "./pages/Employers";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -77,6 +79,16 @@ const App = () => {
             <Route
               path="/contact"
               element={<Contact />}
+            />
+
+            <Route
+              path="/privacy"
+              element={<Privacy />}
+            />
+
+            <Route
+              path="/cookies"
+              element={<Cookies />}
             />
 
             <Route
