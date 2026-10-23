@@ -1,7 +1,47 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { useAuth } from '../context/AuthContext';
+
+const DESKTOP_NAV_LINKS = [
+  { label: 'Find Jobs', href: '/jobs', badge: '2k+' },
+  { label: 'Companies', href: '/companies' },
+  { label: 'Salaries', href: '/salaries' },
+];
+
+const RESOURCE_DROPDOWN_LINKS = [
+  {
+    label: 'Resources',
+    href: '/resources',
+    description: 'Guides, interview prep & roadmaps',
+    badge: 'Hub',
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+    ),
+  },
+  {
+    label: 'About',
+    href: '/about',
+    description: 'Our mission, story & manifesto',
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
+    description: 'Get in touch & developer support',
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
+];
 
 const NAV_LINKS = [
   { label: 'Find Jobs', href: '/jobs', badge: '2k+' },
@@ -27,6 +67,7 @@ const Navbar = () => {
   const [search, setSearch] = useState('');
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const userMenuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -184,7 +225,7 @@ const Navbar = () => {
 
         {/* Center: pill nav (desktop) */}
         <ul className="hidden items-center gap-1 rounded-full border border-base-300/70 bg-base-200/60 p-1.5 lg:flex">
-          {NAV_LINKS.map((link) => (
+          {DESKTOP_NAV_LINKS.map((link) => (
             <li key={link.label}>
               <NavLink
                 to={link.href}
@@ -216,6 +257,91 @@ const Navbar = () => {
               </NavLink>
             </li>
           ))}
+
+          {/* Resources Dropdown with About & Contact (Hover on Desktop) */}
+          <li className="relative group">
+            {(() => {
+              const isResourcesActive = ['/resources', '/about', '/contact'].includes(location.pathname);
+              return (
+                <>
+                  <NavLink
+                    to="/resources"
+                    className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 hover:text-base-content ${
+                      isResourcesActive ? 'text-base-content' : 'text-base-content/65'
+                    }`}
+                  >
+                    <span>Resources</span>
+                    <svg
+                      className="h-3.5 w-3.5 opacity-60 transition-transform duration-200 group-hover:rotate-180"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+
+                    {/* underline — active only */}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute right-4 bottom-1 left-4 h-0.5 origin-left rounded-full bg-gradient-to-r from-primary to-secondary transition-transform duration-300 ease-out ${
+                        isResourcesActive
+                          ? 'scale-x-100 opacity-100'
+                          : 'scale-x-0 opacity-0 group-hover:scale-x-50 group-hover:opacity-50'
+                      }`}
+                    />
+                  </NavLink>
+
+                  {/* Dropdown Menu on Hover */}
+                  <div className="absolute left-1/2 -translate-x-1/2 pt-2 top-full w-64 invisible opacity-0 translate-y-1.5 transition-all duration-200 ease-out group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 z-50">
+                    <div className="overflow-hidden rounded-2xl border border-base-300/80 bg-base-100/95 p-1.5 shadow-2xl shadow-base-content/10 backdrop-blur-xl">
+                      {RESOURCE_DROPDOWN_LINKS.map((item) => {
+                        const isCurrent = location.pathname === item.href;
+                        return (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            className={`flex items-start gap-3 rounded-xl p-2.5 transition-colors ${
+                              isCurrent
+                                ? 'bg-primary/10 text-primary font-bold'
+                                : 'hover:bg-base-200/80 text-base-content/80 hover:text-base-content'
+                            }`}
+                          >
+                            <div
+                              className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                                isCurrent
+                                  ? 'bg-primary text-primary-content'
+                                  : 'bg-base-200/70 text-base-content/70'
+                              }`}
+                            >
+                              {item.icon}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold leading-tight">
+                                  {item.label}
+                                </span>
+                                {item.badge && (
+                                  <span className="rounded-full bg-primary/15 px-1.5 py-0.2 text-[9px] font-bold text-primary">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-[11px] text-base-content/55 truncate mt-0.5 font-normal">
+                                {item.description}
+                              </p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+          </li>
         </ul>
 
         {/* Right: theme + auth + hamburger */}
